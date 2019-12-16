@@ -4,12 +4,20 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --timeout 3000000 -R spec --ui bdd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SauravKanchan/did-resolver.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ethers": "^4.0.40"
+    "ethers": "^4.0.40",
+    "web3": "^1.2.4"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.2"
   }
 }

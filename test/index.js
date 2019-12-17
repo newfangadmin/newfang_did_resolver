@@ -56,7 +56,7 @@ describe('Import and class initialization', async () => {
     let test_wallet = new ethers.Wallet("24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA");
     let tx = await resolver.contract.share(IDs[0], test_wallet.address, AccessTypes.read, ethers.utils.hashMessage("asdf"), 120);
     await tx.wait();
-    let data = await resolver.getKeyHashSigned(IDs[0], AccessTypes.read, test_wallet.privateKey);
+    let data = await resolver.getKeyHashSigned(IDs[0], "read", test_wallet.privateKey);
     assert.ok(data.validity, `validity should be non zero`);
   });
 
@@ -65,5 +65,11 @@ describe('Import and class initialization', async () => {
     let id = IDs[0];
     let doc = (await r.resolve(`did:newfang:${id}`));
     assert.ok(doc.publicKey[0].newfangSpecificId === id, `Expected ${id} but got ${doc.publicKey[0].newfangSpecificId}`);
+  });
+
+  it('Set Private Key', async() => {
+    let r = new Resolver();
+    r.setPrivateKey(privateKey);
+    assert.ok(r.wallet.privateKey === privateKey, `Private key not set`);
   });
 });

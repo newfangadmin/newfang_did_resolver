@@ -42,5 +42,12 @@ describe('Import and class initialization', async () => {
     assert.ok(sig.v === 28 || sig.v === 27, `Expected 28 or 27 but got ${sig.v}`);
     assert.ok(sig.r.length===66 ,`Length of R expected to be 66 but got ${sig.r.length}`);
     assert.ok(sig.s.length===66 ,`Length of S expected to be 66 but got ${sig.s.length}`);
+  });
+
+  it('Resolve', async () => {
+    let id = "0x4de0e96b0a8886e42a2c35b57df8a9d58a93b5bff655bc37a30e2ab8e29dc066";
+    let doc = (await resolver.resolve(`did:newfang:${id}`));
+    assert.ok(doc.publicKey[0].newfangSpecificId === id, `Expected ${id} but got ${doc.publicKey[0].newfangSpecificId}`);
   })
+
 });

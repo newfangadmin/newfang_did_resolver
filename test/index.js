@@ -57,7 +57,13 @@ describe('Import and class initialization', async () => {
     let tx = await resolver.contract.share(IDs[0], test_wallet.address, AccessTypes.read, ethers.utils.hashMessage("asdf"), 120);
     await tx.wait();
     let data = await resolver.getKeyHashSigned(IDs[0], AccessTypes.read, test_wallet.privateKey);
-    console.log(data);
+    assert.ok(data.validity, `validity should be non zero`);
   });
 
+  it('Resolver without any parameter', async ()=> {
+    let r = new Resolver();
+    let id = IDs[0];
+    let doc = (await r.resolve(`did:newfang:${id}`));
+    assert.ok(doc.publicKey[0].newfangSpecificId === id, `Expected ${id} but got ${doc.publicKey[0].newfangSpecificId}`);
+  });
 });

@@ -52,8 +52,13 @@ console.log(tx.hash);
 Signed Functions:
 ```javascript
 (async() => {
-  //  resolver.getKeyHashSigned(file id, AccessType, privateKey of signer)
-  console.log(await resolver.getKeyHashSigned("0x4de0e96b0a8886e42a2c35b57df8a9d58a93b5bff655bc37a30e2ab8e29dc066", "read", privateKey));
+    let file_id = "0x4de0e96b0a8886e42a2c35b57df8a9d58a93b5bff655bc37a30e2ab8e29dc066";
+
+    
+    let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
+    let sig = await client_resolver.getKeyHashRawTransaction(file_id, "read");
+    
+    console.log(await resolver.getKeyHashSigned(file_id, "read", sig));
 })();
 ```
 Output:

@@ -53,21 +53,23 @@ describe('Import and class initialization', async () => {
   });
 
   it('Get Key Hash Signed', async () => {
-    let test_wallet = new ethers.Wallet("24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA");
-    let tx = await resolver.contract.share(IDs[0], test_wallet.address, AccessTypes.read, ethers.utils.hashMessage("asdf"), 120);
-    await tx.wait();
-    let data = await resolver.getKeyHashSigned(IDs[0], "read", test_wallet.privateKey);
+    // let test_wallet = new ethers.Wallet("24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA");
+    // let tx = await resolver.contract.share(IDs[0], test_wallet.address, AccessTypes.read, ethers.utils.hashMessage("asdf"), 120);
+    // await tx.wait();
+    let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
+    let sig = await client_resolver.getKeyHashRawTransaction(IDs[0], "read");
+    let data = await resolver.getKeyHashSigned(IDs[0], "read", sig);
     assert.ok(data.validity, `validity should be non zero`);
   });
 
-  it('Resolver without any parameter', async ()=> {
+  it('Resolver without any parameter', async () => {
     let r = new Resolver();
     let id = IDs[0];
     let doc = (await r.resolve(`did:newfang:${id}`));
     assert.ok(doc.publicKey[0].newfangSpecificId === id, `Expected ${id} but got ${doc.publicKey[0].newfangSpecificId}`);
   });
 
-  it('Set Private Key', async() => {
+  it('Set Private Key', async () => {
     let r = new Resolver();
     r.setPrivateKey(privateKey);
     assert.ok(r.wallet.privateKey === privateKey, `Private key not set`);

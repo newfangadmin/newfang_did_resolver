@@ -1,24 +1,46 @@
 const assert = require('assert');
 const Resolver = require('../lib/index');
-let resolver;
+const ethers = require('ethers');
+let resolver,wallet;
+
+let IDs = [
+  "0x4de0e96b0a8886e42a2c35b57df8a9d58a93b5bff655bc37a30e2ab8e29dc066",
+  "0x3d725c5ee53025f027da36bea8d3af3b6a3e9d2d1542d47c162631de48e66c1c",
+  "0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe"
+];
+let AccessTypes = {
+  read: ethers.utils.formatBytes32String("read"),
+  reshare: ethers.utils.formatBytes32String("reshare"),
+  delete: ethers.utils.formatBytes32String("delete")
+};
 describe('Import and class initialization', async () => {
   it('initialize', async () => {
     resolver = new Resolver({privateKey: "0x637b316da08aa597df18f7f91b4da5d7cf0d7af777984284fb3fe755f3346284"});
     assert.ok(resolver.wallet.address, "Wallet not defined");
   });
 
+
+  it('Connect to contract', async () => {
+    assert.ok(resolver.contract, "Conract not connected");
+  });
+
   it('optional parameters', async () => {
     let config = {
       privateKey: "0x637b316da08aa597df18f7f91b4da5d7cf0d7af777984284fb3fe755f3346284",
       provider: "https://testnet2.matic.network",
-      address: "0x0D6ABA8102dBE478817275B663B87d624224EF21"
+      address: "0x86e9541EE9aB0Bd0848Bcf7B5ED8A3c3B58Ce186"
     };
     let reolver_optional = new Resolver(config);
-    assert.ok(reolver_optional.provider.connection.url === config.provider,"Provider not set");
+    assert.ok(reolver_optional.provider.connection.url === config.provider, "Provider not set");
     assert.ok(reolver_optional.address === config.address, "Address not set");
   });
 
-  // it('Connect to contract', async()=>{
-  //
-  // });
+  it('Sign', async () => {
+    wallet = new ethers.Wallet("0x637b316da08aa597df18f7f91b4da5d7cf0d7af777984284fb3fe755f3346284");
+    let sig = (await resolver.sign(["bytes32", "bytes32", "uint256"], [IDs[1], AccessTypes.read,
+      await resolver.contract.nonce(wallet.address)], wallet.privateKey));
+    assert.ok(sig.v === 28 || sig.v === 27, `Expected 28 or 27 but got ${sig.v}`);
+    assert.ok(sig.r.length===66 ,`Length of R expected to be 66 but got ${sig.r.length}`);
+    assert.ok(sig.s.length===66 ,`Length of S expected to be 66 but got ${sig.s.length}`);
+  })
 });

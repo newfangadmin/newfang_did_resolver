@@ -1,1 +1,1 @@
-# DID Resolver
+# Newfang DID Resolver

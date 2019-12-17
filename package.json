@@ -1,7 +1,7 @@
 {
-  "name": "did-resolver",
+  "name": "newfang-did-resolver",
   "version": "1.0.0",
-  "description": "",
+  "description": "Resolve newfang DID documents",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha --timeout 3000000 -R spec --ui bdd"
@@ -10,9 +10,17 @@
     "type": "git",
     "url": "git+https://github.com/SauravKanchan/did-resolver.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Saurav Kanchan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SauravKanchan/did-resolver/issues"
+  },
+  "homepage": "https://github.com/SauravKanchan/did-resolver#readme",
+  "keywords": [
+    "newfang",
+    "DID",
+    "resolver"
+  ],
   "dependencies": {
     "ethers": "^4.0.40",
     "web3": "^1.2.4"

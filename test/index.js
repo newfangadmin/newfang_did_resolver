@@ -54,7 +54,9 @@ describe('Import and class initialization', async () => {
 
   it('Get Key Hash Signed', async () => {
     // let test_wallet = new ethers.Wallet("24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA");
-    // let tx = await resolver.contract.share(IDs[0], test_wallet.address, AccessTypes.read, ethers.utils.hashMessage("asdf"), 120);
+    // let tx = await resolver.contract.createDID(IDs[0]);
+    // await tx.wait();
+    // tx = await resolver.contract.share(IDs[0], test_wallet.address, AccessTypes.read, ethers.utils.hashMessage("asdf"), 120);
     // await tx.wait();
     let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
     let sig = await client_resolver.getKeyHashRawTransaction(IDs[0], "read");

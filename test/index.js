@@ -10,7 +10,7 @@ let IDs = [
 ];
 
 let privateKey = "0x637b316da08aa597df18f7f91b4da5d7cf0d7af777984284fb3fe755f3346284";
-
+let fileId;
 let AccessTypes = {
   read: ethers.utils.formatBytes32String("read"),
   reshare: ethers.utils.formatBytes32String("reshare"),
@@ -76,11 +76,22 @@ describe('Import and class initialization', async () => {
     assert.ok(data.validity, `validity should be non zero`);
   });
 
+
   it('Create DID Signed', async () => {
     let file_id = await resolver.generateFileId(makeid(30));
+    fileId = file_id;
     let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
     let sig = await client_resolver.createDIDRawTransaction(file_id);
     let tx = await resolver.createDIDSigned(file_id, sig);
+    await tx.wait();
+    assert.ok(tx.hash, `Transaction hash not generated`);
+  });
+
+
+  it('Share DID Signed', async () => {
+    let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
+    let sig = await client_resolver.shareRawTransaction(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), 120);
+    let tx = await resolver.shareSigned(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), 120, sig);
     await tx.wait();
     assert.ok(tx.hash, `Transaction hash not generated`);
   });

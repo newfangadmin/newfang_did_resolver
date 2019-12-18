@@ -28,6 +28,10 @@ Output:
        publicKey:
         'did:newfang:0x4de0e96b0a8886e42a2c35b57df8a9d58a93b5bff655bc37a30e2ab8e29dc066#owner' } ] }
 ```
+To generate Newfang Specific Id from storage Index
+```javascript
+let file_id = await resolver.generateFileId('<storage index>');
+```
 
 To call the contract functions, private key must be provided. There are two ways to achieve this.
 + During initialization

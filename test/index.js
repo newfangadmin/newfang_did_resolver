@@ -77,7 +77,7 @@ describe('Import and class initialization', async () => {
   });
 
   it('Create DID Signed', async () => {
-    let file_id = ethers.utils.formatBytes32String(makeid(30));
+    let file_id = await resolver.generateFileId(makeid(30));
     let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
     let sig = await client_resolver.createDIDRawTransaction(file_id);
     let tx = await resolver.createDIDSigned(file_id, sig);
@@ -97,4 +97,5 @@ describe('Import and class initialization', async () => {
     r.setPrivateKey(privateKey);
     assert.ok(r.wallet.privateKey === privateKey, `Private key not set`);
   });
+
 });

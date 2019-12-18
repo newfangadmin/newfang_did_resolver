@@ -16,6 +16,18 @@ let AccessTypes = {
   reshare: ethers.utils.formatBytes32String("reshare"),
   delete: ethers.utils.formatBytes32String("delete")
 };
+
+function makeid(length) {
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+
 describe('Import and class initialization', async () => {
   it('initialize', async () => {
     resolver = new Resolver({privateKey: privateKey});
@@ -62,6 +74,15 @@ describe('Import and class initialization', async () => {
     let sig = await client_resolver.getKeyHashRawTransaction(IDs[0], "read");
     let data = await resolver.getKeyHashSigned(IDs[0], "read", sig);
     assert.ok(data.validity, `validity should be non zero`);
+  });
+
+  it('Create DID Signed', async () => {
+    let file_id = ethers.utils.formatBytes32String(makeid(30));
+    let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
+    let sig = await client_resolver.createDIDRawTransaction(file_id);
+    let tx = await resolver.createDIDSigned(file_id, sig);
+    await tx.wait();
+    assert.ok(tx.hash, `Transaction hash not generated`);
   });
 
   it('Resolver without any parameter', async () => {

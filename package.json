@@ -1,6 +1,6 @@
 {
   "name": "newfang-did-resolver",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Resolve newfang DID documents",
   "main": "lib/index.js",
   "scripts": {
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SauravKanchan/did-resolver.git"
+    "url": "git+https://github.com/newfangadmin/newfang_did_resolver.git"
   },
   "author": "Saurav Kanchan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SauravKanchan/did-resolver/issues"
+    "url": "https://github.com/newfangadmin/newfang_did_resolver/issues"
   },
-  "homepage": "https://github.com/SauravKanchan/did-resolver#readme",
+  "homepage": "https://github.com/newfangadmin/newfang_did_resolver#readme",
   "keywords": [
     "newfang",
     "DID",

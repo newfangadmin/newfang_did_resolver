@@ -71,3 +71,11 @@ Output:
    '0x39867be5f9b67a02f1f9cad5784e28557c614c8024b351e6cad5f9119e268309',
   validity: 1576581590 }
 ```
+Update ACK Signed
+```javascript
+let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
+let sig = await client_resolver.updateRawTransaction(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), 0);
+let tx = await resolver.updateACKSigned(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), 0, sig);
+await tx.wait();
+console.log(tx.hash);    
+```

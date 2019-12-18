@@ -64,6 +64,22 @@ describe('Import and class initialization', async () => {
     assert.ok(doc.publicKey[0].newfangSpecificId === id, `Expected ${id} but got ${doc.publicKey[0].newfangSpecificId}`);
   });
 
+  it('Resolver without any parameter', async () => {
+    let r = new Resolver();
+    let id = IDs[0];
+    let doc = (await r.resolve(`did:newfang:${id}`));
+    assert.ok(doc.publicKey[0].newfangSpecificId === id, `Expected ${id} but got ${doc.publicKey[0].newfangSpecificId}`);
+  });
+
+  it('Set Private Key', async () => {
+    let r = new Resolver();
+    r.setPrivateKey(privateKey);
+    assert.ok(r.wallet.privateKey === privateKey, `Private key not set`);
+  });
+
+});
+
+describe('Signed Functions', async () => {
   it('Get Key Hash Signed', async () => {
     // let test_wallet = new ethers.Wallet("24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA");
     // let tx = await resolver.contract.createDID(IDs[0]);
@@ -96,17 +112,20 @@ describe('Import and class initialization', async () => {
     assert.ok(tx.hash, `Transaction hash not generated`);
   });
 
-  it('Resolver without any parameter', async () => {
-    let r = new Resolver();
-    let id = IDs[0];
-    let doc = (await r.resolve(`did:newfang:${id}`));
-    assert.ok(doc.publicKey[0].newfangSpecificId === id, `Expected ${id} but got ${doc.publicKey[0].newfangSpecificId}`);
+  it('Update ACK Signed', async () => {
+    let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
+    let sig = await client_resolver.updateRawTransaction(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), 0);
+    let tx = await resolver.updateACKSigned(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), 0, sig);
+    await tx.wait();
+    assert.ok(tx.hash, `Transaction hash not generated`);
   });
 
-  it('Set Private Key', async () => {
-    let r = new Resolver();
-    r.setPrivateKey(privateKey);
-    assert.ok(r.wallet.privateKey === privateKey, `Private key not set`);
+  it('Change File Owner Signed', async () => {
+    let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
+    let sig = await client_resolver.changeOwnerRawTransaction(fileId, wallet.address);
+    let tx = await resolver.changeOwnerSigned(fileId, wallet.address, sig);
+    await tx.wait();
+    assert.ok(tx.hash, `Transaction hash not generated`);
   });
 
 });

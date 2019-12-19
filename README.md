@@ -23,6 +23,10 @@ Output:
        owner: '0x5089E1c3742Ab4fD0e25837637488D74FFEB58e2',
        newfangSpecificId:
         '0x4de0e96b0a8886e42a2c35b57df8a9d58a93b5bff655bc37a30e2ab8e29dc066' } ],
+  access:
+   { read: [ '0xC8e1F3B9a0CdFceF9fFd2343B943989A22517b26' ],
+     reshare: [],
+     delete: [] },
   authentication:
    [ { type: 'Secp256k1SignatureAuthentication2018',
        publicKey:

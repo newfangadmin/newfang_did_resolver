@@ -87,7 +87,7 @@ describe('Signed Functions', async () => {
       await tx.wait();
       tx = await resolver.contract.share(IDs[0], test_wallet.address, AccessTypes.read, ethers.utils.hashMessage("asdf"), 120);
       await tx.wait();
-    }catch (e) {
+    } catch (e) {
 
     }
     let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
@@ -130,6 +130,19 @@ describe('Signed Functions', async () => {
     let tx = await resolver.changeOwnerSigned(fileId, wallet.address, sig);
     await tx.wait();
     assert.ok(tx.hash, `Transaction hash not generated`);
+  });
+
+  it('Set File attribute Signed', async () => {
+    let n = 18;
+    let k = 9;
+    let fileSize = 1222;
+    let ueb = `<UEB hash>`;
+    let client_resolver = new Resolver({privateKey: wallet.privateKey});
+    let sig = await client_resolver.fileUpdateRawTransaction(fileId, n, k, fileSize, ueb);
+    let tx = await resolver.fileUpdateSigned(fileId, n, k, fileSize, ueb, sig);
+    await tx.wait();
+    let file = await resolver.contract.files(fileId);
+    assert.ok(parseInt(file.n) === n && parseInt(file.k) === k && parseInt(file.file_size) === fileSize && file.ueb === ueb, "File attributes don't match");
   });
 
 });

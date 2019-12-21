@@ -98,11 +98,12 @@ describe('Signed Functions', async () => {
 
 
   it('Create DID Signed', async () => {
-    let file_id = await resolver.generateFileId(makeid(30));
-    fileId = file_id;
+    let id = makeid(30);
+    fileId = await resolver.generateFileId(id);
+    assert.ok(resolver.parseFileId(fileId) === id, "Id parsed did not match");
     let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
-    let sig = await client_resolver.createDIDRawTransaction(file_id);
-    let tx = await resolver.createDIDSigned(file_id, sig);
+    let sig = await client_resolver.createDIDRawTransaction(fileId);
+    let tx = await resolver.createDIDSigned(fileId, sig);
     await tx.wait();
     assert.ok(tx.hash, `Transaction hash not generated`);
   });

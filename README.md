@@ -13,7 +13,7 @@ let resolver = new Resolver();
 
 Output:
 ```shell script
-{ '@context': 'https://w3id.org/did/v1',
+{ '@context': ['https://w3id.org/did/v1', 'https://newfang.io/did/v1'],
   id:
    'did:newfang:0x4de0e96b0a8886e42a2c35b57df8a9d58a93b5bff655bc37a30e2ab8e29dc066',
   publicKey:
@@ -34,7 +34,7 @@ Output:
 ```
 To generate Newfang Specific Id from storage Index
 ```javascript
-let file_id = await resolver.generateFileId('<storage index>');
+let file_id = resolver.generateFileId('<storage index>');
 ```
 
 To call the contract functions, private key must be provided. There are two ways to achieve this.
@@ -42,7 +42,7 @@ To call the contract functions, private key must be provided. There are two ways
 ```javascript
 //Resolver('<private Key>');
 let privateKey = "0x637b316da08aa597df18f7f91b4da5d7cf0d7af777984284fb3fe755f3346284";
-let resolver = new Resolver(privateKey);
+let resolver = new Resolver({privateKey: privateKey});
 ```
 + To set private Key using setPrivateKey function
 ```javascript

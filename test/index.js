@@ -119,8 +119,16 @@ describe('Signed Functions', async () => {
 
   it('Update ACK Signed', async () => {
     let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
-    let sig = await client_resolver.updateRawTransaction(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), 0);
-    let tx = await resolver.updateACKSigned(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), 0, sig);
+    let sig = await client_resolver.updateRawTransaction(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), 100);
+    let tx = await resolver.updateACKSigned(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), 100, sig);
+    await tx.wait();
+    assert.ok(tx.hash, `Transaction hash not generated`);
+  });
+
+  it('Revoke', async () => {
+    let client_resolver = new Resolver({privateKey: "24C4FE6063E62710EAD956611B71825B778B041B18ED53118CE5DA5F02E494BA"});
+    let sig = await client_resolver.revokeRawTransaction(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"));
+    let tx = await resolver.revokeSigned(fileId, wallet.address, AccessTypes["read"], ethers.utils.hashMessage("<access-key>"), sig);
     await tx.wait();
     assert.ok(tx.hash, `Transaction hash not generated`);
   });

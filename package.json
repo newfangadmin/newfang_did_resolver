@@ -1,6 +1,6 @@
 {
   "name": "newfang-did-resolver",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Resolve newfang DID documents",
   "main": "lib/index.js",
   "scripts": {
